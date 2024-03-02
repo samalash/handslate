@@ -1,3 +1,6 @@
+import cv2
+import os
+import uuid
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -14,10 +17,30 @@ def preprocess_image(img_path):
     return img_array
 
 # Example usage: Make predictions on a new image
-new_image_path = 'assets/A.jpeg'
+new_image_path = 'assets/Test Images/A.jpeg'
 preprocessed_image = preprocess_image(new_image_path)
 predictions = model.predict(preprocessed_image)
 
 # Assuming your model has multiple classes and you want the class with the highest probability
 predicted_class = np.argmax(predictions, axis=1)
 print("Predicted class:", predicted_class)
+
+cap = cv2.VideoCapture(0)
+while cap.isOpened():
+    ret, frame = cap.read()
+
+    pic = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    pic = cv2.cvtColor(pic, cv2.COLOR_RGB2BGR)
+
+
+    if cv2.waitKey(10) & 0xFF == ord('p'):
+         print("make sure")
+         cv2.imwrite(os.path.join('assets/Output Images', '{}.jpg'.format(uuid.uuid1())), pic)
+
+
+    cv2.imshow('Hand Tracking', pic)
+
+    if cv2.waitKey(10) & 0xFF == ord('q'):
+            break
+cap.release()
+cv2.destroyAllWindows()
