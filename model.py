@@ -44,7 +44,7 @@ while cap.isOpened():
 
     if cv2.waitKey(10) & 0xFF == ord('p'):
          # press p to take a picture and have the network predict letter
-
+         
          print("make sure")
          filename = '{}.jpg'.format(uuid.uuid1())
          cv2.imwrite(os.path.join('assets/Output Images', filename), frame)
