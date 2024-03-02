@@ -37,20 +37,16 @@ predictions = model.predict(preprocessed_image)
 predicted_class = np.argmax(predictions, axis=1)
 print("Predicted class:", predicted_class)
 
-cap = cv2.VideoCapture(0)
-while cap.isOpened():
-    ret, frame = cap.read()
-
-    pic = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    pic = cv2.cvtColor(pic, cv2.COLOR_RGB2BGR)
-
+cap = cv2.VideoCapture(0) #Opens the webcam from the comptuer
+while cap.isOpened(): 
+    ret, frame = cap.read() #Reads the frame from the webcam
 
     if cv2.waitKey(10) & 0xFF == ord('p'):
          # press p to take a picture and have the network predict letter
 
          print("make sure")
          filename = '{}.jpg'.format(uuid.uuid1())
-         cv2.imwrite(os.path.join('assets/Output Images', filename), pic)
+         cv2.imwrite(os.path.join('assets/Output Images', filename), frame)
          filename = os.path.join('assets/Output Images', filename)
          print(filename)
          preprocessed_image = preprocess_image(filename)
@@ -59,6 +55,7 @@ while cap.isOpened():
          print("Predicted class:", predicted_class)
          print("Predicted letter:", classToLetter(predicted_class[0]))
          os.remove(filename)
+
 
     if cv2.waitKey(10) & 0xFF == ord('s'):
          # press s to take a picture and save, to have the network predict letter
@@ -75,7 +72,7 @@ while cap.isOpened():
          print("Predicted letter:", classToLetter(predicted_class[0]))
      
 
-    cv2.imshow('Hand Tracking', pic)
+    cv2.imshow('Hand Tracking', frame)
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
             # press q to quit the program
