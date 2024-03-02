@@ -37,20 +37,16 @@ predictions = model.predict(preprocessed_image)
 predicted_class = np.argmax(predictions, axis=1)
 print("Predicted class:", predicted_class)
 
-cap = cv2.VideoCapture(0)
-while cap.isOpened():
-    ret, frame = cap.read()
-
-    pic = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    pic = cv2.cvtColor(pic, cv2.COLOR_RGB2BGR)
-
+cap = cv2.VideoCapture(0) #Opens the webcam from the comptuer
+while cap.isOpened(): 
+    ret, frame = cap.read() #Reads the frame from the webcam
 
     if cv2.waitKey(10) & 0xFF == ord('p'):
          print("make sure")
-         cv2.imwrite(os.path.join('assets/Output Images', '{}.jpg'.format(uuid.uuid1())), pic)
+         cv2.imwrite(os.path.join('assets/Output Images', '{}.jpg'.format(uuid.uuid1())), frame)
 
 
-    cv2.imshow('Hand Tracking', pic)
+    cv2.imshow('Hand Tracking', frame)
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
             break
