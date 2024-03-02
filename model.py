@@ -6,6 +6,18 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
 
+def classToLetter(classnum):
+    #converts class number to corresponding letter (0-28 -> A-Z, del, nothing, space)
+    if classnum == 26:
+        return "del"
+    if classnum == 27:
+        return "nothing"
+    if classnum == 28:
+        return "space"
+    return chr(classnum + 65)
+    
+
+
 # Load the model from the .h5 file
 model = load_model('models/asl_vgg16_best_weights.h5')
 
