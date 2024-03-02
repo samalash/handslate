@@ -15,7 +15,7 @@ def classToLetter(classnum):
     if classnum == 28:
         return "space"
     return chr(classnum + 65)
-    
+
 
 
 # Load the model from the .h5 file
@@ -42,13 +42,40 @@ while cap.isOpened():
     ret, frame = cap.read() #Reads the frame from the webcam
 
     if cv2.waitKey(10) & 0xFF == ord('p'):
-         print("make sure")
-         cv2.imwrite(os.path.join('assets/Output Images', '{}.jpg'.format(uuid.uuid1())), frame)
+         # press p to take a picture and have the network predict letter
 
+         print("make sure")
+         filename = '{}.jpg'.format(uuid.uuid1())
+         cv2.imwrite(os.path.join('assets/Output Images', filename), frame)
+         filename = os.path.join('assets/Output Images', filename)
+         print(filename)
+         preprocessed_image = preprocess_image(filename)
+         predictions = model.predict(preprocessed_image)
+         predicted_class = np.argmax(predictions, axis=1)
+         print("Predicted class:", predicted_class)
+         print("Predicted letter:", classToLetter(predicted_class[0]))
+         os.remove(filename)
+
+
+    if cv2.waitKey(10) & 0xFF == ord('s'):
+         # press s to take a picture and save, to have the network predict letter
+
+         print("make sure")
+         filename = '{}.jpg'.format(uuid.uuid1())
+         cv2.imwrite(os.path.join('assets/Output Images', filename), pic)
+         filename = os.path.join('assets/Output Images', filename)
+         print(filename)
+         preprocessed_image = preprocess_image(filename)
+         predictions = model.predict(preprocessed_image)
+         predicted_class = np.argmax(predictions, axis=1)
+         print("Predicted class:", predicted_class)
+         print("Predicted letter:", classToLetter(predicted_class[0]))
+     
 
     cv2.imshow('Hand Tracking', frame)
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
+            # press q to quit the program
             break
 cap.release()
 cv2.destroyAllWindows()
