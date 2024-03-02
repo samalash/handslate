@@ -37,10 +37,9 @@ predictions = model.predict(preprocessed_image)
 predicted_class = np.argmax(predictions, axis=1)
 print("Predicted class:", predicted_class)
 
-cap = cv2.VideoCapture(0)
-while cap.isOpened():
-    ret, frame = cap.read()
-
+cap = cv2.VideoCapture(0) #Opens the webcam from the comptuer
+while cap.isOpened(): 
+    ret, frame = cap.read() #Reads the frame from the webcam
 
     if cv2.waitKey(10) & 0xFF == ord('p'):
          # press p to take a picture and have the network predict letter
@@ -56,6 +55,7 @@ while cap.isOpened():
          print("Predicted class:", predicted_class)
          print("Predicted letter:", classToLetter(predicted_class[0]))
          os.remove(filename)
+
 
     if cv2.waitKey(10) & 0xFF == ord('s'):
          # press s to take a picture and save, to have the network predict letter
