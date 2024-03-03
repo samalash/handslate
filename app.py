@@ -21,9 +21,9 @@ def process_image():
   image_bytes = base64.b64decode(image_data)
   nparr = np.frombuffer(image_bytes, np.uint8)
   decoded_image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) #this is now the image file itself
-    
+
   #Create a file in Output Images of this image
-  filename = '{}.jpg'.format(uuid.uuid1()) 
+  filename = '{}.jpg'.format(uuid.uuid1())
   cv2.imwrite(os.path.join('assets/Output Images', filename), decoded_image)
   filename = os.path.join('assets/Output Images', filename)
 
@@ -31,16 +31,16 @@ def process_image():
   preprocessed_image = preprocess_image(filename)
   predictions = model.predict(preprocessed_image)
   predicted_class = np.argmax(predictions, axis=1)
-  print("Predicted class:", predicted_class) 
+  print("Predicted class:", predicted_class)
   print("Predicted letter:", classToLetter(predicted_class[0]))
   os.remove(filename) #Delete the file afterwards
 
-  return jsonify({'message': "Image captured"}) 
+  return jsonify({'message': "Image captured"})
 
   #except:
      #print("Here")
      #return jsonify({'message': "Error 415 happened again"})
-  
 
 if __name__ == '__main__':
+    os.system("npm run build:css")
     app.run(debug=True)
