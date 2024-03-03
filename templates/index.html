@@ -16,9 +16,13 @@
           // Handle autoplay for some browsers
           video.play();
 
+          setInterval(()=>{
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          },10)
+
           setInterval(() => {
             // Draw the video frame onto the canvas
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
             const imageData = canvas.toDataURL('image/jpeg', 0.5);
 
             fetch('/process_image', {
@@ -28,7 +32,7 @@
             })
               .then(response => response.json())
               .then(data => console.log(data));
-          }, 10); // Send image every 100 milliseconds
+          }, 1000); // Send image every 100 milliseconds
         })
         .catch(error => {
           console.error('Error accessing webcam:', error);
