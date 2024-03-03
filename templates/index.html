@@ -21,6 +21,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('video');
       const canvas = document.getElementById('canvas');
+      const resultElement = document.getElementById('result'); // Added this line
       const context = canvas.getContext('2d');
 
       navigator.mediaDevices.getUserMedia({ video: true })
@@ -46,7 +47,12 @@
               body: JSON.stringify({ frame: imageData }),
             })
               .then(response => response.json())
-              .then(data => console.log(data));
+              .then(data => {
+                console.log(data);
+                // Assuming the returned data has a property 'letter'
+                const letter = data.letter;
+                resultElement.textContent = `Predicted Letter: ${letter}`;
+              });
           }, 1000); // Send image every 100 milliseconds
         })
         .catch(error => {
@@ -59,5 +65,6 @@
   <img class="max-h-40 mx-auto" src="https://cdn.discordapp.com/attachments/1213505590584680480/1213712821851000853/handslate_logo.png?ex=65f67926&is=65e40426&hm=2c175024c8f7635d7353a5d3a7ce98689140cee7ac50e04a9d994a2109b11c26&" alt="logo">
   <video id="video" width="0" height="0"></video>
   <canvas class="flex mx-auto" id="canvas" width="800" height="600"></canvas>
+  <div id="result" class="text-center mt-4 text-5xl font-bold text-blue-500"></div>
 </body>
 </html>

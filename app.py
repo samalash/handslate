@@ -31,11 +31,11 @@ def process_image():
   preprocessed_image = preprocess_image(filename)
   predictions = model.predict(preprocessed_image)
   predicted_class = np.argmax(predictions, axis=1)
-  print("Predicted class:", predicted_class)
-  print("Predicted letter:", classToLetter(predicted_class[0]))
+#   print("Predicted class:", predicted_class)
+#   print("Predicted letter:", classToLetter(predicted_class[0]))
   os.remove(filename) #Delete the file afterwards
 
-  return jsonify({'message': "Image captured"})
+  return jsonify({'letter': classToLetter(predicted_class[0])})
 
   #except:
      #print("Here")

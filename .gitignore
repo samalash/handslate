@@ -282,3 +282,7 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+assets/Output Images/*
+models/asl_vgg16_newer_weights.h5

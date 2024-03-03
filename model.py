@@ -17,11 +17,12 @@ def classToLetter(classnum):
     return chr(classnum + 65)
 
 # Load the model from the .h5 file
-model = load_model('models/asl_vgg16_best_weights.h5')
+# Make sure to download the newest model from github!!!!!!
+model = load_model('models/asl_vgg16_newer_weights.h5')
 
 # Define a function to preprocess input images
 def preprocess_image(img_path):
-    img = image.load_img(img_path, target_size=(64, 64))  # Adjust target size as needed
+    img = image.load_img(img_path, target_size=(128, 128))  # Adjust target size as needed
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
