@@ -1,4 +1,7 @@
 # asl-translation
 
-worked on by:
-mrao@udel.edu, jassaini@udel.edu, acrisp@udel.edu, mtorres@udel.edu
+Created by:
+   Maanav Rao      -   mrao@udel.edu
+   Jasnoor Saini   -   jassaini@udel.edu
+   Andrew Crispino -   acrisp@udel.edu
+   Mateo Torres    -   mtorres@udel.edu
