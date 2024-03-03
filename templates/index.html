@@ -4,67 +4,117 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
   <!-- Material Icons Link -->
-  <link
-  href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
   <!-- Font Awesome Link -->
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-  integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-  crossorigin="anonymous"
-  />
-  <title>Webcam Stream</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+  <title>Handslate</title>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('video');
       const canvas = document.getElementById('canvas');
-      const resultElement = document.getElementById('result'); // Added this line
+      const resultElement = document.getElementById('result');
       const context = canvas.getContext('2d');
+      let captureType = 'camera'; // Variable to track the capture type
 
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          // Set the video source to the stream
-          video.srcObject = stream;
+      // Added a button element
+      const toggleCaptureButton = document.getElementById('toggleCaptureButton');
+      toggleCaptureButton.addEventListener('click', toggleCaptureType);
 
-          // Handle autoplay for some browsers
-          video.play();
+      function toggleCaptureType() {
+        // Toggle between camera and screen capture
+        captureType = (captureType === 'camera') ? 'screen' : 'camera';
 
-          setInterval(()=>{
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-          },10)
+        if (captureType === 'camera') {
+          startCameraCapture();
+        } else {
+          startScreenCapture();
+        }
+      }
 
-          setInterval(() => {
-            // Draw the video frame onto the canvas
+      function startCameraCapture() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(stream => {
+            // Set the video source to the stream
+            video.srcObject = stream;
 
-            const imageData = canvas.toDataURL('image/jpeg', 0.5);
+            // Handle autoplay for some browsers
+            video.play();
 
-            fetch('/process_image', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({ frame: imageData }),
-            })
-              .then(response => response.json())
-              .then(data => {
-                console.log(data);
-                // Assuming the returned data has a property 'letter'
-                const letter = data.letter;
-                resultElement.textContent = `Predicted Letter: ${letter}`;
-              });
-          }, 1000); // Send image every 100 milliseconds
-        })
-        .catch(error => {
-          console.error('Error accessing webcam:', error);
-        });
+            setInterval(() => {
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            }, 10);
+
+            setInterval(() => {
+              // Draw the video frame onto the canvas
+              const imageData = canvas.toDataURL('image/jpeg', 0.5);
+
+              fetch('/process_image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ frame: imageData }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  console.log(data);
+                  // Assuming the returned data has a property 'letter'
+                  const letter = data.letter;
+                  resultElement.textContent = `Predicted Letter: ${letter}`;
+                });
+            }, 1000); // Send image every 100 milliseconds
+          })
+          .catch(error => {
+            console.error('Error accessing camera:', error);
+          });
+      }
+
+      function startScreenCapture() {
+        navigator.mediaDevices.getDisplayMedia({ video: true })
+          .then(stream => {
+            // Set the video source to the stream
+            video.srcObject = stream;
+
+            // Handle autoplay for some browsers
+            video.play();
+
+            setInterval(() => {
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            }, 10);
+
+            setInterval(() => {
+              // Draw the video frame onto the canvas
+              const imageData = canvas.toDataURL('image/jpeg', 0.5);
+
+              fetch('/process_image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ frame: imageData }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  console.log(data);
+                  // Assuming the returned data has a property 'letter'
+                  const letter = data.letter;
+                  resultElement.textContent = `Predicted Letter: ${letter}`;
+                });
+            }, 1000); // Send image every 100 milliseconds
+          })
+          .catch(error => {
+            console.error('Error accessing screen:', error);
+          });
+      }
+
+      // Start with camera capture by default
+      startCameraCapture();
     });
   </script>
 </head>
 <body>
   <img class="max-h-40 mx-auto" src="https://cdn.discordapp.com/attachments/1213505590584680480/1213712821851000853/handslate_logo.png?ex=65f67926&is=65e40426&hm=2c175024c8f7635d7353a5d3a7ce98689140cee7ac50e04a9d994a2109b11c26&" alt="logo">
+  <!-- Added the button element to toggle capture type -->
+  <button id="toggleCaptureButton">Share a Video Feed Instead</button>
   <video id="video" width="0" height="0"></video>
-  <canvas class="flex mx-auto" id="canvas" width="800" height="600"></canvas>
+  <canvas class="flex mx-auto lg-rounded" id="canvas" width="800" height="600"></canvas>
   <div id="result" class="text-center mt-4 text-5xl font-bold text-blue-500"></div>
 </body>
 </html>
