@@ -16,8 +16,6 @@ def classToLetter(classnum):
         return "space"
     return chr(classnum + 65)
 
-
-
 # Load the model from the .h5 file
 model = load_model('models/asl_vgg16_best_weights.h5')
 
@@ -28,6 +26,10 @@ def preprocess_image(img_path):
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
+
+# Below is our original implrementation. This python code pulled up the webcam
+# and when certain keys were pressed, saved the frame and ran it through the model
+# to output a result (predict the letter)
 '''
 # Example usage: Make predictions on a new image
 new_image_path = 'assets/Test Images/A.jpeg'
