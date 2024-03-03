@@ -28,6 +28,7 @@ def preprocess_image(img_path):
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
+'''
 # Example usage: Make predictions on a new image
 new_image_path = 'assets/Test Images/A.jpeg'
 preprocessed_image = preprocess_image(new_image_path)
@@ -78,4 +79,4 @@ while cap.isOpened():
             # press q to quit the program
             break
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()'''
