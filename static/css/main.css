@@ -565,6 +565,6 @@ video {
   display: none;
 }
 
-.pt-20 {
-  padding-top: 5rem;
+.max-h-40 {
+  max-height: 10rem;
 }
