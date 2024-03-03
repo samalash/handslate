@@ -28,7 +28,7 @@
             })
               .then(response => response.json())
               .then(data => console.log(data));
-          }, 1000); // Send image every 100 milliseconds
+          }, 10); // Send image every 100 milliseconds
         })
         .catch(error => {
           console.error('Error accessing webcam:', error);

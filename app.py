@@ -21,7 +21,6 @@ def process_image():
   image_bytes = base64.b64decode(image_data)
   nparr = np.frombuffer(image_bytes, np.uint8)
   decoded_image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-  print(type(decoded_image))
 
   #print(image_bytes)
   #decoded_image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
@@ -31,12 +30,14 @@ def process_image():
     
   filename = '{}.jpg'.format(uuid.uuid1())
   cv2.imwrite(os.path.join('assets/Output Images', filename), decoded_image)
+  filename = os.path.join('assets/Output Images', filename)
 
   preprocessed_image = preprocess_image(filename)
   predictions = model.predict(preprocessed_image)
   predicted_class = np.argmax(predictions, axis=1)
   print("Predicted class:", predicted_class)
   print("Predicted letter:", classToLetter(predicted_class[0]))
+  os.remove(filename)
 
     # Send processed image information back to the browser (optional)
   return jsonify({'message': "Image captured"})  # Example response
