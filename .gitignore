@@ -34,3 +34,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+models/asl_vgg16_newer_weights.h5
+/__pycache__/
