@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button"
+
 
 export default function Home() {
   return (
@@ -56,7 +58,7 @@ export default function Home() {
             Find in-depth information about Next.js features and API.
           </p>
         </a>
-
+        <Button variant="outline">Button</Button>
         <a
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
           className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
